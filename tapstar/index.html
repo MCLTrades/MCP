@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TapStar – NFC Bewertungskarten &amp; Active Reputation Management</title>
+<meta name="description" content="TapStar: NFC-Bewertungskarten holen in Sekunden echte 5-Sterne-Google-Bewertungen. Mit Active Reputation Management beantworten wir jede Bewertung professionell für Sie." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#070A12;
+    --bg-2:#0C111D;
+    --bg-card:#101625;
+    --bg-card-2:#131A2B;
+    --indigo:#6C5CE7;
+    --indigo-light:#9C8CFF;
+    --blue:#4F8CFF;
+    --lime:#B4FF39;
+    --lime-d:#8FD91F;
+    --red:#FF6B6B;
+    --ink:#F5F7FA;
+    --ink-soft:#9AA3B9;
+    --ink-faint:#5B6478;
+    --border:rgba(255,255,255,.08);
+    --border-strong:rgba(255,255,255,.18);
+    --shadow:0 30px 70px -30px rgba(0,0,0,.65);
+    --glow:0 0 0 1px rgba(180,255,57,.15),0 20px 60px -20px rgba(108,92,231,.5);
+    --radius:20px;
+    --maxw:1200px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Inter',system-ui,sans-serif;
+    color:var(--ink);
+    background:var(--bg);
+    background-image:radial-gradient(900px 500px at 15% 0%,rgba(108,92,231,.16),transparent 60%),radial-gradient(900px 500px at 85% 10%,rgba(79,140,255,.12),transparent 55%);
+    line-height:1.65;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.brand{font-family:'Space Grotesk',system-ui,sans-serif;font-weight:600;line-height:1.15;letter-spacing:-.01em}
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  .grad{background:linear-gradient(120deg,var(--indigo-light),var(--blue) 55%,var(--lime));-webkit-background-clip:text;background-clip:text;color:transparent}
+  code{font-family:inherit;background:rgba(255,255,255,.08);padding:.1rem .4rem;border-radius:4px;font-size:.9em}
+
+  /* ---------- Buttons ---------- */
+  .btn{
+    display:inline-flex;align-items:center;gap:.55rem;
+    font-weight:700;font-size:.98rem;
+    padding:.95rem 1.8rem;border-radius:12px;cursor:pointer;border:1px solid transparent;
+    transition:transform .25s cubic-bezier(.34,1.56,.64,1),box-shadow .25s ease,background .25s ease,border-color .25s ease;
+    will-change:transform;
+  }
+  .btn-primary{background:linear-gradient(135deg,var(--lime),var(--lime-d));color:#0A1400;box-shadow:0 16px 30px -12px rgba(180,255,57,.45)}
+  .btn-primary:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 22px 38px -12px rgba(180,255,57,.55)}
+  .btn-ghost{background:rgba(255,255,255,.04);color:var(--ink);border-color:var(--border-strong);backdrop-filter:blur(6px)}
+  .btn-ghost:hover{border-color:var(--indigo-light);transform:translateY(-3px)}
+  .btn-lg{padding:1.1rem 2.2rem;font-size:1.05rem}
+  .btn:focus-visible,a:focus-visible{outline:2px solid var(--lime);outline-offset:3px}
+
+  /* ---------- Nav ---------- */
+  header.nav{position:sticky;top:0;z-index:60;backdrop-filter:blur(14px);background:rgba(7,10,18,.72);border-bottom:1px solid transparent;transition:border-color .3s ease,box-shadow .3s ease}
+  header.nav.scrolled{border-color:var(--border);box-shadow:0 10px 30px -20px rgba(0,0,0,.8)}
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;height:76px}
+  .brand{display:flex;align-items:center;gap:.6rem;font-size:1.35rem;font-weight:700}
+  .brand .mark{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;background:linear-gradient(135deg,var(--indigo),var(--blue));box-shadow:0 8px 18px -6px rgba(108,92,231,.6);position:relative}
+  .brand .mark svg{width:18px;height:18px;stroke:#fff}
+  .nav-links{display:flex;gap:2.1rem;align-items:center}
+  .nav-links a:not(.btn){font-weight:600;font-size:.94rem;color:var(--ink-soft);position:relative;transition:color .2s}
+  .nav-links a:not(.btn)::after{content:"";position:absolute;left:0;bottom:-8px;height:2px;width:0;border-radius:2px;background:var(--lime);transition:width .3s ease}
+  .nav-links a:not(.btn):hover{color:var(--ink)}
+  .nav-links a:not(.btn):hover::after{width:100%}
+  @media(max-width:860px){.nav-links a:not(.btn){display:none}}
+
+  /* ---------- Hero ---------- */
+  .hero{position:relative;padding:84px 0 40px;overflow:hidden}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
+  .eyebrow{display:inline-flex;align-items:center;gap:.55rem;font-weight:700;font-size:.85rem;background:rgba(180,255,57,.08);color:var(--lime);border:1px solid rgba(180,255,57,.25);padding:.45rem 1rem;border-radius:100px;margin-bottom:1.6rem}
+  .eyebrow .dot{width:8px;height:8px;border-radius:50%;background:var(--lime);animation:pulse 1.8s ease-in-out infinite}
+  .hero h1{font-size:clamp(2.5rem,5.4vw,4.1rem);max-width:15ch}
+  .hero p.lead{font-size:1.16rem;color:var(--ink-soft);max-width:46ch;margin:1.5rem 0 2.2rem}
+  .hero-cta{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1.8rem}
+  .trust-line{display:flex;align-items:center;gap:.8rem;color:var(--ink-soft);font-size:.92rem;font-weight:500}
+  .trust-line .stars{color:var(--lime);letter-spacing:.1em}
+  .avatars{display:flex}
+  .avatars span{width:30px;height:30px;border-radius:50%;border:2px solid var(--bg);margin-left:-9px;background:linear-gradient(135deg,var(--indigo-light),var(--blue));display:grid;place-items:center;font-size:.65rem;font-weight:700}
+  .avatars span:first-child{margin-left:0}
+
+  .stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6rem;margin-top:3.2rem;padding-top:2.4rem;border-top:1px solid var(--border)}
+  .stat b{font-family:'Space Grotesk',sans-serif;font-size:2.1rem;font-weight:700;display:block;color:var(--ink)}
+  .stat span{color:var(--ink-soft);font-size:.86rem;font-weight:500}
+  @media(max-width:700px){.stats-row{grid-template-columns:1fr;gap:1rem}}
+
+  /* Hero visual */
+  .hero-visual{position:relative;height:440px;display:flex;align-items:center;justify-content:center}
+  .glow-orb{position:absolute;border-radius:50%;filter:blur(60px);opacity:.5;z-index:0}
+  .glow-orb.o1{width:280px;height:280px;background:var(--indigo);top:-30px;right:-10px;animation:drift 8s ease-in-out infinite}
+  .glow-orb.o2{width:220px;height:220px;background:var(--lime);bottom:-20px;left:-10px;opacity:.28;animation:drift 10s ease-in-out infinite reverse}
+  .phone{position:relative;width:190px;height:380px;border-radius:34px;background:linear-gradient(160deg,#1B2333,#0C111D);border:2px solid var(--border-strong);box-shadow:var(--shadow);z-index:2;animation:floaty 5s ease-in-out infinite}
+  .phone::before{content:"";position:absolute;top:14px;left:50%;transform:translateX(-50%);width:52px;height:5px;border-radius:4px;background:rgba(255,255,255,.15)}
+  .phone-screen{position:absolute;inset:14px 10px;border-radius:24px;background:linear-gradient(180deg,#141B2C,#0C111D);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;overflow:hidden}
+  .phone-screen .g{display:flex;gap:3px}
+  .phone-screen .g svg{width:16px;height:16px}
+  .phone-screen .starrow{display:flex;gap:3px;color:var(--lime)}
+  .phone-screen .starrow svg{width:16px;height:16px;animation:starpop .6s ease forwards;opacity:0}
+  .phone-screen small{color:var(--ink-soft);font-size:.62rem;letter-spacing:.04em}
+  .nfc-card{position:absolute;left:-52px;bottom:60px;width:150px;height:94px;border-radius:14px;background:linear-gradient(135deg,var(--indigo),var(--blue));box-shadow:0 20px 40px -14px rgba(79,140,255,.55);z-index:3;transform:rotate(-9deg);animation:tapcard 2.6s ease-in-out infinite}
+  .nfc-card::before{content:"";position:absolute;top:12px;left:14px;width:26px;height:26px;border:2px solid rgba(255,255,255,.85);border-radius:50%}
+  .nfc-card::after{content:"TapStar";position:absolute;bottom:12px;left:14px;font-family:'Space Grotesk',sans-serif;font-weight:700;color:#fff;font-size:.82rem;letter-spacing:.02em}
+  .ripple{position:absolute;left:-52px;bottom:60px;width:150px;height:94px;border-radius:14px;border:2px solid var(--lime);opacity:0;animation:ripple 2.6s ease-out infinite}
+  .ripple.r2{animation-delay:.5s}
+
+  /* ---------- Section shell ---------- */
+  section{position:relative}
+  .kicker{font-weight:700;letter-spacing:.14em;text-transform:uppercase;font-size:.78rem;display:inline-flex;align-items:center;gap:.5rem}
+  .kicker.k-indigo{color:var(--indigo-light)}
+  .kicker.k-red{color:var(--red)}
+  .kicker.k-lime{color:var(--lime)}
+  .section-head{text-align:center;max-width:660px;margin:0 auto 3.4rem}
+  .section-head h2{font-size:clamp(1.9rem,4.2vw,2.8rem);margin:.7rem 0 1rem}
+  .section-head p{color:var(--ink-soft);font-size:1.08rem}
+
+  /* Marquee */
+  .marquee{padding:26px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);overflow:hidden;white-space:nowrap;background:var(--bg-2)}
+  .marquee .track{display:inline-block;animation:scrollx 30s linear infinite;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:1.02rem;color:var(--ink-faint)}
+  .marquee .track span{margin:0 1.6rem}
+  .marquee .track b{color:var(--indigo-light);margin:0 .3rem}
+
+  /* ---------- Pain points ---------- */
+  .pain{padding:100px 0}
+  .pain-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
+  .pcard{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:30px;transition:transform .3s ease,border-color .3s ease;position:relative;overflow:hidden}
+  .pcard::before{content:"";position:absolute;top:0;left:0;width:4px;height:100%;background:linear-gradient(180deg,var(--red),transparent)}
+  .pcard:hover{transform:translateY(-6px);border-color:var(--border-strong)}
+  .pcard .pico{width:48px;height:48px;border-radius:12px;background:rgba(255,107,107,.1);display:grid;place-items:center;margin-bottom:1.1rem}
+  .pcard .pico svg{width:24px;height:24px;stroke:var(--red)}
+  .pcard h3{font-size:1.2rem;margin-bottom:.5rem}
+  .pcard p{color:var(--ink-soft);font-size:.96rem}
+  @media(max-width:820px){.pain-grid{grid-template-columns:1fr}}
+
+  /* ---------- Funktionsweise ---------- */
+  .how{padding:100px 0;background:var(--bg-2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;position:relative;margin-top:2rem}
+  .steps::before{content:"";position:absolute;top:38px;left:12%;right:12%;height:2px;background:linear-gradient(90deg,var(--indigo),var(--blue),var(--lime));opacity:.25}
+  .step{position:relative;text-align:center}
+  .step .num{width:76px;height:76px;margin:0 auto 1.4rem;border-radius:50%;background:var(--bg-card);border:1px solid var(--border-strong);display:grid;place-items:center;font-family:'Space Grotesk',sans-serif;font-size:1.5rem;font-weight:700;color:var(--lime);position:relative;z-index:1;box-shadow:var(--shadow)}
+  .step h3{font-size:1.22rem;margin-bottom:.6rem}
+  .step p{color:var(--ink-soft);font-size:.96rem;max-width:32ch;margin:0 auto}
+  @media(max-width:820px){.steps{grid-template-columns:1fr}.steps::before{display:none}}
+  .how-note{text-align:center;margin-top:3rem;color:var(--ink-faint);font-size:.92rem}
+  .how-note span{color:var(--ink-soft)}
+
+  /* ---------- Product ---------- */
+  .product{padding:100px 0}
+  .product-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+  .product-visual{position:relative;height:340px;display:flex;align-items:center;justify-content:center}
+  .card-stack{position:relative;width:280px;height:176px}
+  .card-stack .c{position:absolute;inset:0;border-radius:20px;box-shadow:var(--shadow)}
+  .card-stack .c1{background:linear-gradient(135deg,#1B2333,#0C111D);border:1px solid var(--border-strong);transform:rotate(-6deg) translate(-14px,10px)}
+  .card-stack .c2{background:linear-gradient(135deg,var(--indigo),var(--blue));transform:rotate(4deg) translate(10px,-6px);animation:floaty 5.4s ease-in-out infinite}
+  .card-stack .c2::before{content:"";position:absolute;top:18px;left:22px;width:34px;height:34px;border:2.4px solid rgba(255,255,255,.85);border-radius:50%}
+  .card-stack .c2::after{content:"TapStar";position:absolute;bottom:20px;left:22px;font-family:'Space Grotesk',sans-serif;font-weight:700;color:#fff;font-size:1.05rem}
+  .feature-list{list-style:none;display:flex;flex-direction:column;gap:1rem;margin-top:1.8rem}
+  .feature-list li{display:flex;gap:.8rem;align-items:flex-start;color:var(--ink-soft);font-size:.98rem}
+  .feature-list svg{width:20px;height:20px;stroke:var(--lime);flex-shrink:0;margin-top:.15rem}
+  @media(max-width:900px){.product-grid{grid-template-columns:1fr}}
+
+  /* ---------- Abo ---------- */
+  .abo{padding:100px 0;background:var(--bg-2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+  .abo-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+  .abo-card{background:var(--bg-card);border:1px solid var(--border-strong);border-radius:var(--radius);padding:34px;box-shadow:var(--glow)}
+  .abo-card .badge{display:inline-block;background:rgba(180,255,57,.1);color:var(--lime);font-size:.78rem;font-weight:700;padding:.3rem .8rem;border-radius:100px;margin-bottom:1.1rem}
+  .abo-card h3{font-size:1.4rem;margin-bottom:.6rem}
+  .abo-card p{color:var(--ink-soft);font-size:.96rem}
+  @media(max-width:900px){.abo-grid{grid-template-columns:1fr}}
+
+  /* ---------- Pricing ---------- */
+  .pricing{padding:100px 0}
+  .price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;align-items:stretch}
+  .price-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:34px;display:flex;flex-direction:column;transition:transform .3s ease,border-color .3s ease}
+  .price-card:hover{transform:translateY(-6px)}
+  .price-card.featured{border-color:var(--lime);box-shadow:var(--glow);position:relative;background:var(--bg-card-2)}
+  .price-card.featured .ftag{position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--lime),var(--lime-d));color:#0A1400;font-size:.76rem;font-weight:700;padding:.35rem 1rem;border-radius:100px;white-space:nowrap}
+  .price-card h3{font-size:1.15rem;color:var(--ink-soft);font-weight:600;margin-bottom:.6rem}
+  .price-card .amount{font-family:'Space Grotesk',sans-serif;font-size:2.4rem;font-weight:700;margin-bottom:.2rem}
+  .price-card .amount small{font-size:.95rem;color:var(--ink-faint);font-weight:500}
+  .price-card .desc{color:var(--ink-soft);font-size:.9rem;margin-bottom:1.6rem}
+  .price-card ul{list-style:none;display:flex;flex-direction:column;gap:.75rem;margin-bottom:2rem;flex-grow:1}
+  .price-card li{display:flex;gap:.6rem;align-items:flex-start;font-size:.92rem;color:var(--ink-soft)}
+  .price-card li svg{width:17px;height:17px;stroke:var(--lime);flex-shrink:0;margin-top:.18rem}
+  .price-card .btn{justify-content:center;width:100%}
+  @media(max-width:960px){.price-grid{grid-template-columns:1fr}}
+
+  /* ---------- Testimonials ---------- */
+  .testi{padding:100px 0;background:var(--bg-2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+  .testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .tcard{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:28px}
+  .tcard .stars{color:var(--lime);margin-bottom:1rem;letter-spacing:.1em}
+  .tcard p{color:var(--ink-soft);font-size:.96rem;margin-bottom:1.4rem}
+  .tcard .who{display:flex;align-items:center;gap:.7rem}
+  .tcard .av{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--indigo-light),var(--blue));display:grid;place-items:center;font-size:.72rem;font-weight:700}
+  .tcard .who b{display:block;font-size:.92rem}
+  .tcard .who span{color:var(--ink-faint);font-size:.8rem}
+  @media(max-width:900px){.testi-grid{grid-template-columns:1fr}}
+  .testi-note{text-align:center;color:var(--ink-faint);font-size:.82rem;margin-top:2.6rem;font-style:italic}
+
+  /* ---------- FAQ ---------- */
+  .faq{padding:100px 0}
+  .faq-list{max-width:800px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+  .faq-item{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+  .faq-q{width:100%;text-align:left;background:none;border:none;color:var(--ink);font-family:inherit;font-size:1rem;font-weight:600;padding:22px 24px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;gap:1rem}
+  .faq-q .plus{width:22px;height:22px;flex-shrink:0;position:relative}
+  .faq-q .plus::before,.faq-q .plus::after{content:"";position:absolute;background:var(--lime);border-radius:2px;transition:transform .3s ease}
+  .faq-q .plus::before{top:50%;left:0;width:100%;height:2px;transform:translateY(-50%)}
+  .faq-q .plus::after{left:50%;top:0;width:2px;height:100%;transform:translateX(-50%)}
+  .faq-item.open .faq-q .plus::after{transform:translateX(-50%) rotate(90deg);opacity:0}
+  .faq-a{max-height:0;overflow:hidden;transition:max-height .35s ease}
+  .faq-a p{padding:0 24px 22px;color:var(--ink-soft);font-size:.95rem}
+
+  /* ---------- Final CTA ---------- */
+  .final-cta{padding:100px 0}
+  .fc-box{position:relative;overflow:hidden;border-radius:28px;background:linear-gradient(135deg,var(--indigo),var(--blue));padding:74px 40px;text-align:center;box-shadow:var(--shadow)}
+  .fc-box::before{content:"";position:absolute;inset:0;background:radial-gradient(500px 260px at 20% 0%,rgba(180,255,57,.28),transparent 60%)}
+  .fc-box > *{position:relative}
+  .fc-box h2{font-size:clamp(2rem,4.6vw,3rem);margin-bottom:.9rem;color:#fff}
+  .fc-box p{color:rgba(255,255,255,.88);font-size:1.12rem;max-width:48ch;margin:0 auto 2.3rem}
+  .fc-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+  .fc-box .btn-ghost{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.35);color:#fff}
+
+  /* ---------- Footer ---------- */
+  footer{padding:56px 0 40px;border-top:1px solid var(--border)}
+  .foot-grid{display:flex;justify-content:space-between;flex-wrap:wrap;gap:24px;align-items:flex-start}
+  .foot-links{display:flex;gap:2rem;flex-wrap:wrap}
+  .foot-links a{color:var(--ink-soft);font-size:.9rem}
+  .foot-links a:hover{color:var(--ink)}
+  footer .meta{color:var(--ink-faint);font-size:.85rem;margin-top:.6rem}
+
+  /* ---------- Reveal ---------- */
+  .reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s cubic-bezier(.16,1,.3,1)}
+  .reveal.in{opacity:1;transform:none}
+  .reveal[data-d="1"]{transition-delay:.08s}
+  .reveal[data-d="2"]{transition-delay:.16s}
+  .reveal[data-d="3"]{transition-delay:.24s}
+
+  /* ---------- Keyframes ---------- */
+  @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+  @keyframes drift{0%,100%{transform:translate(0,0)}50%{transform:translate(-16px,14px)}}
+  @keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.6);opacity:.5}}
+  @keyframes scrollx{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  @keyframes tapcard{0%,100%{transform:rotate(-9deg) translate(0,0)}45%{transform:rotate(-3deg) translate(10px,-6px)}60%{transform:rotate(-9deg) translate(0,0)}}
+  @keyframes ripple{0%{opacity:.7;transform:scale(1)}100%{opacity:0;transform:scale(1.5)}}
+  @keyframes starpop{to{opacity:1}}
+
+  @media(max-width:900px){.hero-grid{grid-template-columns:1fr;text-align:center}.hero p.lead,.hero-cta,.trust-line{margin-left:auto;margin-right:auto;justify-content:center}.hero-visual{order:-1;height:360px;transform:scale(.85)}}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="nav" id="nav">
+  <div class="wrap nav-inner">
+    <a href="#top" class="brand"><span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/><circle cx="12" cy="12" r="3"/></svg></span>TapStar</a>
+    <nav class="nav-links">
+      <a href="#funktionsweise">Funktionsweise</a>
+      <a href="#abo">Reputation Management</a>
+      <a href="#preise">Preise</a>
+      <a href="#faq">FAQ</a>
+      <a href="#preise" class="btn btn-primary">Demo anfragen</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow reveal"><span class="dot"></span> Neu: NFC-Bewertungskarten für lokale Unternehmen</span>
+      <h1 class="reveal" data-d="1">Aus zufriedenen Kunden werden <span class="grad">5-Sterne-Bewertungen.</span> Mit einem Antippen.</h1>
+      <p class="lead reveal" data-d="2">TapStar bringt Ihr Google-Profil aufs nächste Level: Eine NFC-Karte, ein Antippen, eine fertige Bewertung – in unter 8 Sekunden. Mit Active&nbsp;Reputation&nbsp;Management beantworten wir zusätzlich jede einzelne Bewertung professionell für Sie.</p>
+      <div class="hero-cta reveal" data-d="3">
+        <a href="#preise" class="btn btn-primary btn-lg">Jetzt Karte sichern →</a>
+        <a href="#funktionsweise" class="btn btn-ghost btn-lg">So funktioniert's</a>
+      </div>
+      <div class="trust-line reveal" data-d="3">
+        <div class="avatars"><span>MB</span><span>SK</span><span>TW</span><span>AL</span></div>
+        <span><span class="stars">★★★★★</span> 4.9/5 · über 340 lokale Unternehmen</span>
+      </div>
+      <div class="stats-row reveal" data-d="3">
+        <div class="stat"><b data-count="8" data-suffix=" Sek.">0</b><span>bis zur fertigen Bewertung</span></div>
+        <div class="stat"><b data-count="285" data-suffix="%">0</b><span>mehr Bewertungen in 90 Tagen</span></div>
+        <div class="stat"><b data-count="24" data-suffix="h">0</b><span>garantierte Antwortzeit</span></div>
+      </div>
+    </div>
+    <div class="hero-visual" aria-hidden="true">
+      <div class="glow-orb o1"></div>
+      <div class="glow-orb o2"></div>
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="g">
+            <svg viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.9 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.6 6.5 29.6 4.5 24 4.5 12.7 4.5 3.5 13.7 3.5 25S12.7 45.5 24 45.5 44.5 36.3 44.5 25c0-1.5-.2-3-.9-4.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 15.5 18.9 12.5 24 12.5c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.6 6.5 29.6 4.5 24 4.5c-7.4 0-13.8 4.2-17 10.2z"/><path fill="#4CAF50" d="M24 45.5c5.5 0 10.4-1.9 14.2-5.1l-6.6-5.4C29.6 36.7 27 37.5 24 37.5c-5.3 0-9.7-3.4-11.3-8.1l-6.6 5.1C9.9 41.1 16.4 45.5 24 45.5z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.2-4.3 5.5l6.6 5.4C41.4 36.1 44.5 31 44.5 25c0-1.5-.2-3-.9-4.5z"/></svg>
+          </div>
+          <div class="starrow" id="hero-stars"></div>
+          <small>Bewertung gesendet ✓</small>
+        </div>
+      </div>
+      <div class="ripple"></div>
+      <div class="ripple r2"></div>
+      <div class="nfc-card"></div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee" aria-hidden="true">
+  <div class="track" id="marquee"></div>
+</div>
+
+<!-- PAIN POINTS -->
+<section class="pain" id="pain">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="kicker k-red">Das Problem</span>
+      <h2>Zufriedene Kunden bewerten Sie nicht. Unzufriedene schon.</h2>
+      <p>Die unbequeme Wahrheit: Ihr Google-Ranking hängt selten davon ab, wie gut Ihre Arbeit ist – sondern davon, wie leicht es ist, das auch zu sagen.</p>
+    </div>
+    <div class="pain-grid">
+      <div class="pcard reveal" data-d="1">
+        <div class="pico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15 9l-6 6M9 9l6 6"/></svg></div>
+        <h3>Zu viele Klicks bis zur Bewertung</h3>
+        <p>Google suchen, Unternehmen finden, einloggen, Sterne setzen, Text schreiben. Bei jedem Schritt springt ein zufriedener Kunde ab – über 65% brechen den Weg vorher ab.</p>
+      </div>
+      <div class="pcard reveal" data-d="2">
+        <div class="pico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg></div>
+        <h3>Unbeantwortete Bewertungen</h3>
+        <p>Jede Bewertung ohne Antwort wirkt wie Desinteresse – auch die guten. Eine unbeantwortete negative Bewertung kostet Sie im Schnitt mehrere potenzielle Neukunden.</p>
+      </div>
+      <div class="pcard reveal" data-d="3">
+        <div class="pico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M21 7v6M21 7h-6"/></svg></div>
+        <h3>Sinkende Sichtbarkeit</h3>
+        <p>Google belohnt Unternehmen mit mehr aktuellen Bewertungen mit besseren Plätzen in der lokalen Suche und auf Maps. Wer stillsteht, verliert Plätze an die Konkurrenz.</p>
+      </div>
+      <div class="pcard reveal" data-d="1">
+        <div class="pico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+        <h3>Keine Zeit fürs Reputationsmanagement</h3>
+        <p>Zwischen Tagesgeschäft und Kundenterminen bleibt für tägliches Bewertungsmanagement schlicht keine Zeit – bis der Schaden schon entstanden ist.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FUNKTIONSWEISE -->
+<section class="how" id="funktionsweise">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="kicker k-indigo">So einfach funktioniert's</span>
+      <h2>Drei Sekunden zwischen Kundenlob und Google-Bewertung</h2>
+      <p>Keine App, kein Login, kein Suchen. Die TapStar-Karte macht aus einem zufriedenen Kunden in Sekunden eine öffentliche Bewertung.</p>
+    </div>
+    <div class="steps">
+      <div class="step reveal" data-d="1">
+        <div class="num">1</div>
+        <h3>Karte antippen</h3>
+        <p>Der Kunde hält sein Smartphone kurz an Ihre TapStar-Karte am Tresen, Tisch oder Empfang.</p>
+      </div>
+      <div class="step reveal" data-d="2">
+        <div class="num">2</div>
+        <h3>Direkt zu Google</h3>
+        <p>Das Smartphone öffnet automatisch das Google-Bewertungsfenster – exakt für Ihr Unternehmen.</p>
+      </div>
+      <div class="step reveal" data-d="3">
+        <div class="num">3</div>
+        <h3>Bewertung in Sekunden</h3>
+        <p>Sterne setzen, optional ein paar Worte tippen, absenden. Fertig – live auf Ihrem Google-Profil.</p>
+      </div>
+    </div>
+    <p class="how-note reveal">Funktioniert mit <span>jedem modernen iPhone &amp; Android-Gerät</span> · kein Akku nötig · <span>QR-Code als Backup</span> inklusive</p>
+  </div>
+</section>
+
+<!-- PRODUCT -->
+<section class="product">
+  <div class="wrap product-grid">
+    <div class="product-visual reveal">
+      <div class="card-stack">
+        <div class="c c1"></div>
+        <div class="c c2"></div>
+      </div>
+    </div>
+    <div class="reveal" data-d="1">
+      <span class="kicker k-lime">Die Hardware</span>
+      <h2 style="margin:.7rem 0 1.2rem;font-size:clamp(1.8rem,3.6vw,2.4rem)">Eine Karte, gebaut, um täglich genutzt zu werden</h2>
+      <ul class="feature-list">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Wetterfest, bruchsicher und für den täglichen Einsatz gemacht</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Passiver NFC-Chip – kein Akku, keine Wartung, hält ein Leben lang</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Elegantes Design, individualisierbar mit Ihrem Logo</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Tischaufsteller &amp; Kassenkarte inklusive, QR-Code als Fallback</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Versand in 3–5 Werktagen, Einrichtung in wenigen Minuten</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ABO -->
+<section class="abo" id="abo">
+  <div class="wrap abo-grid">
+    <div class="reveal">
+      <span class="kicker k-lime">Für maximale Wirkung</span>
+      <h2 style="margin:.7rem 0 1.2rem;font-size:clamp(1.8rem,3.6vw,2.4rem)">Wir schreiben. Sie ernten die Sterne.</h2>
+      <p style="color:var(--ink-soft);font-size:1.05rem;margin-bottom:1.6rem">Mehr Bewertungen sind nur die halbe Miete. Wer sie nicht beantwortet, verschenkt Vertrauen. Unser Team aus geschulten Textern übernimmt das für Sie – professionell, menschlich und rund um die Uhr im Blick.</p>
+      <ul class="feature-list">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Persönliche Antwort auf jede Bewertung binnen 24 Stunden</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Individuell formuliert – nie generisch, nie robotisch</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Deeskalations-Profis für kritische 1- und 2-Sterne-Bewertungen</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Sofort-Alarm bei kritischen Bewertungen direkt an Sie</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Monatlicher Report: Sternedurchschnitt, Antwortquote, Entwicklung</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Jederzeit kündbar – kein Vertrag, keine Mindestlaufzeit</li>
+      </ul>
+    </div>
+    <div class="abo-card reveal" data-d="1">
+      <span class="badge">Active Reputation Management</span>
+      <h3>Ihr Google-Profil, professionell betreut</h3>
+      <p style="margin-top:.8rem">Während Sie sich um Ihr Tagesgeschäft kümmern, sorgt unser Team dafür, dass jede Google-Bewertung eine durchdachte, markenkonforme Antwort erhält – positiv wie negativ. Kein Bewertung bleibt unbeantwortet, kein Shitstorm eskaliert unbemerkt.</p>
+      <p style="margin-top:1rem;color:var(--lime);font-weight:700">→ Durchschnittlich 4.8★ Profilbewertung bei unseren Abo-Kunden</p>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="preise">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="kicker k-indigo">Preise</span>
+      <h2>Transparent. Fair. Ohne versteckte Kosten.</h2>
+      <p>Starten Sie mit der Karte allein oder holen Sie das volle Potenzial mit Active Reputation Management heraus.</p>
+    </div>
+    <div class="price-grid">
+      <div class="price-card reveal" data-d="1">
+        <h3>Karte Only</h3>
+        <div class="amount">89&nbsp;€ <small>einmalig</small></div>
+        <p class="desc">Ideal zum Ausprobieren</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> 1× TapStar NFC-Karte</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Tischaufsteller inklusive</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> QR-Code als Backup</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Lebenslange Chip-Garantie</li>
+        </ul>
+        <a href="#kontakt" class="btn btn-ghost">Karte bestellen</a>
+      </div>
+      <div class="price-card featured reveal" data-d="2">
+        <span class="ftag">Meistgewählt</span>
+        <h3>Karte + Reputation Management</h3>
+        <div class="amount">149&nbsp;€ <small>/ Monat</small></div>
+        <p class="desc">89&nbsp;€ einmalig für die Karte + monatliches Abo</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Alles aus „Karte Only“</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Antwort auf jede Bewertung binnen 24h</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Deeskalation bei negativen Bewertungen</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Monatlicher Performance-Report</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Monatlich kündbar</li>
+        </ul>
+        <a href="#kontakt" class="btn btn-primary">Jetzt starten</a>
+      </div>
+      <div class="price-card reveal" data-d="3">
+        <h3>Mehrere Standorte</h3>
+        <div class="amount">Individuell</div>
+        <p class="desc">Für Ketten &amp; Franchise-Unternehmen</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Karten für alle Standorte</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Zentrales Standort-Dashboard</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Mengenrabatt</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Persönlicher Ansprechpartner</li>
+        </ul>
+        <a href="#kontakt" class="btn btn-ghost">Beratung anfragen</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testi">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="kicker k-lime">Ergebnisse</span>
+      <h2>Was Inhaber wie Sie sagen</h2>
+    </div>
+    <div class="testi-grid">
+      <div class="tcard reveal" data-d="1">
+        <div class="stars">★★★★★</div>
+        <p>„Seit wir TapStar nutzen, kommen jede Woche neue 5-Sterne-Bewertungen rein – ganz ohne, dass wir aktiv danach fragen müssen.“</p>
+        <div class="who"><div class="av">MC</div><div><b>Beispiel-Zitat</b><span>Inhaberin, Café (Platzhalter)</span></div></div>
+      </div>
+      <div class="tcard reveal" data-d="2">
+        <div class="stars">★★★★★</div>
+        <p>„Das Abo ist Gold wert. Ich habe keine Zeit, jeden Tag Bewertungen zu beantworten – TapStar macht das professioneller, als ich es je könnte.“</p>
+        <div class="who"><div class="av">TW</div><div><b>Beispiel-Zitat</b><span>Inhaber, Autowerkstatt (Platzhalter)</span></div></div>
+      </div>
+      <div class="tcard reveal" data-d="3">
+        <div class="stars">★★★★★</div>
+        <p>„Unsere Google-Bewertung ist von 4.1 auf 4.8 gestiegen – in drei Monaten. Sichtbar mehr Anfragen über Google Maps.“</p>
+        <div class="who"><div class="av">SL</div><div><b>Beispiel-Zitat</b><span>Inhaberin, Zahnarztpraxis (Platzhalter)</span></div></div>
+      </div>
+    </div>
+    <p class="testi-note">Hinweis: Dies sind Beispiel-Testimonials. Ersetze sie durch echte Kundenstimmen, sobald verfügbar.</p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq" id="faq">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="kicker k-indigo">Häufige Fragen</span>
+      <h2>Noch Fragen? Wir haben Antworten.</h2>
+    </div>
+    <div class="faq-list" id="faq-list"></div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final-cta" id="kontakt">
+  <div class="wrap">
+    <div class="fc-box reveal">
+      <h2>Bereit für mehr Sterne, weniger Aufwand?</h2>
+      <p>Sichern Sie sich jetzt Ihre TapStar-Karte und starten Sie in wenigen Tagen mit dem Sammeln echter Google-Bewertungen.</p>
+      <div class="fc-actions">
+        <a href="#preise" class="btn btn-primary btn-lg">Jetzt Karte bestellen</a>
+        <a href="#" class="btn btn-ghost btn-lg">Beratungsgespräch buchen</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap foot-grid">
+    <div>
+      <a href="#top" class="brand"><span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/><circle cx="12" cy="12" r="3"/></svg></span>TapStar</a>
+      <p class="meta">NFC-Bewertungskarten &amp; Active Reputation Management für lokale Unternehmen.</p>
+      <p class="meta">© 2026 TapStar · [Adresse einfügen]</p>
+    </div>
+    <div class="foot-links">
+      <a href="#funktionsweise">Funktionsweise</a>
+      <a href="#preise">Preise</a>
+      <a href="#faq">FAQ</a>
+      <a href="#">Impressum</a>
+      <a href="#">Datenschutz</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Marquee content
+  const useCases = ["Restaurants","Friseursalons","Autowerkstätten","Zahnarztpraxen","Fitnessstudios","Hotels","Handwerksbetriebe","Kosmetikstudios"];
+  const mq = document.getElementById('marquee');
+  const line = useCases.map(u=>`<span>Ideal für <b>${u}</b></span>`).join('');
+  mq.innerHTML = line + line;
+
+  // FAQ data
+  const faqs = [
+    { q:"Brauchen meine Kunden eine App, um zu bewerten?", a:"Nein. Die TapStar-Karte nutzt NFC-Technologie, die in jedem modernen Smartphone bereits eingebaut ist. Ein kurzes Antippen genügt – kein Download, keine Installation." },
+    { q:"Funktioniert TapStar mit meinem bestehenden Google-Unternehmensprofil?", a:"Ja. Wir verknüpfen die Karte einmalig mit Ihrem bestehenden Google-Profil. Sie benötigen kein neues Profil und keine technischen Vorkenntnisse." },
+    { q:"Können negative Bewertungen „gefiltert“ oder gelöscht werden?", a:"Nein – und das ist auch gut so. TapStar arbeitet zu 100% nach den Google-Richtlinien und manipuliert keine Bewertungen. Stattdessen reagieren wir professionell und lösungsorientiert auf jede Bewertung, auch auf kritische." },
+    { q:"Wie schnell ist die Karte einsatzbereit?", a:"Nach Bestellung erhalten Sie Ihre TapStar-Karte innerhalb von 3–5 Werktagen. Die Einrichtung dauert wenige Minuten." },
+    { q:"Ist der Service DSGVO-konform?", a:"Ja, TapStar arbeitet vollständig DSGVO-konform. Es werden keine personenbezogenen Daten der bewertenden Kunden gespeichert." },
+    { q:"Kann ich das Abo jederzeit kündigen?", a:"Ja. Das Active Reputation Management Abo ist monatlich kündbar, ganz ohne Mindestlaufzeit oder Vertragsbindung." },
+    { q:"Ich habe mehrere Standorte – geht das auch?", a:"Selbstverständlich. Für Unternehmen mit mehreren Standorten erstellen wir ein individuelles Angebot inklusive Mengenrabatt. Kontaktieren Sie uns einfach." }
+  ];
+  const faqList = document.getElementById('faq-list');
+  faqs.forEach((f,i)=>{
+    const item = document.createElement('div');
+    item.className = 'faq-item reveal';
+    item.dataset.d = (i%3)+1;
+    item.innerHTML = `
+      <button class="faq-q" aria-expanded="false">
+        <span>${f.q}</span>
+        <span class="plus"></span>
+      </button>
+      <div class="faq-a"><p>${f.a}</p></div>`;
+    const btn = item.querySelector('.faq-q');
+    const ans = item.querySelector('.faq-a');
+    btn.addEventListener('click', ()=>{
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(o=>{
+        o.classList.remove('open');
+        o.querySelector('.faq-a').style.maxHeight = null;
+        o.querySelector('.faq-q').setAttribute('aria-expanded','false');
+      });
+      if(!isOpen){
+        item.classList.add('open');
+        ans.style.maxHeight = ans.scrollHeight + 'px';
+        btn.setAttribute('aria-expanded','true');
+      }
+    });
+    faqList.appendChild(item);
+  });
+
+  // Hero phone stars pop-in loop
+  const heroStars = document.getElementById('hero-stars');
+  const starSvg = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l2.9 6.3 6.9.7-5.2 4.7 1.5 6.8L12 17.6l-6.1 3.4 1.5-6.8L2.2 9.5l6.9-.7z"/></svg>`;
+  function playStars(){
+    heroStars.innerHTML = '';
+    for(let i=0;i<5;i++){
+      const s = document.createElement('span');
+      s.innerHTML = starSvg;
+      s.style.animationDelay = (i*0.12)+'s';
+      heroStars.appendChild(s);
+    }
+  }
+  playStars();
+  setInterval(playStars, 2600);
+
+  // Scroll reveal
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+  },{threshold:.14});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  // Nav shadow on scroll
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', ()=> nav.classList.toggle('scrolled', window.scrollY>10), {passive:true});
+
+  // Count-up stats
+  const counters = document.querySelectorAll('[data-count]');
+  const cio = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(!e.isIntersecting) return;
+      const el = e.target, target = +el.dataset.count, suffix = el.dataset.suffix || '';
+      let cur = 0;
+      const step = Math.max(1, Math.round(target/50));
+      const tick = ()=>{ cur=Math.min(target,cur+step); el.textContent=cur+suffix; if(cur<target) requestAnimationFrame(tick); };
+      tick(); cio.unobserve(el);
+    });
+  },{threshold:.6});
+  counters.forEach(c=>cio.observe(c));
+</script>
+</body>
+</html>
